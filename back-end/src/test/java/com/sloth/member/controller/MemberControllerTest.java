@@ -1,5 +1,6 @@
 package com.sloth.member.controller;
 
+import com.sloth.authentication.service.JwtService;
 import com.sloth.member.domain.Member;
 import com.sloth.member.repository.MemberRepository;
 import org.junit.jupiter.api.DisplayName;
@@ -25,6 +26,8 @@ class MemberControllerTest {
     MockMvc mockMvc;
     @Autowired
     MemberRepository memberRepository;
+    @Autowired
+    JwtService jwtService;
 
     @Test
     @DisplayName("아이디 중복 확인")
@@ -34,7 +37,7 @@ class MemberControllerTest {
         String username = "sloth";
 
         // when
-        mockMvc.perform(post("/api/check/username").param("username", username))
+        mockMvc.perform(post("/api/member/check").param("username", username))
                 .andDo(print())
 
                 // then
@@ -59,14 +62,14 @@ class MemberControllerTest {
         params.add("phone", "000-0000-0000");
 
         // when
-        mockMvc.perform(post("/api/members").params(params))
+        mockMvc.perform(post("/api/member").params(params))
                 .andDo(print())
 
                 // then
                 .andExpect(status().isOk());
 
         // when
-        mockMvc.perform(post("/api/members").params(params))
+        mockMvc.perform(post("/api/member").params(params))
                 .andDo(print())
 
                 // then
@@ -86,53 +89,15 @@ class MemberControllerTest {
         params.add("email", "jeongyongs@sloth.com");
         params.add("phone", "000-0000-0000");
 
-        mockMvc.perform(post("/api/members").params(params));
-
+        mockMvc.perform(post("/api/member").params(params));
         Member member = memberRepository.findByUsername("sloth");
+        String jwt = jwtService.createJwt("sloth");
 
         // when
-        mockMvc.perform(get("/api/members/" + member.getId()))
+        mockMvc.perform(get("/api/member/" + member.getId()).header("Authorization", "bearer " + jwt))
                 .andDo(print())
 
                 // then
                 .andExpect(status().isOk());
-    }
-
-    @Test
-    @DisplayName("로그인 요청")
-    @Transactional
-    void loginRequest() throws Exception {
-
-        // given
-        MultiValueMap<String, String> params1 = new LinkedMultiValueMap<>();
-        params1.add("username", "sloth");
-        params1.add("password", "q1w2e3r4");
-        params1.add("name", "Jeongyong Lee");
-        params1.add("email", "jeongyongs@sloth.com");
-        params1.add("phone", "000-0000-0000");
-
-        MultiValueMap<String, String> params2 = new LinkedMultiValueMap<>();
-        params2.add("username", "sloth");
-        params2.add("password", "q1w2e3r4");
-
-        MultiValueMap<String, String> params3 = new LinkedMultiValueMap<>();
-        params3.add("username", "sloth");
-        params3.add("password", "q1w2e3r4!");
-
-        mockMvc.perform(post("/api/members").params(params1));
-
-        // when
-        mockMvc.perform(post("/api/login").params(params2))
-                .andDo(print())
-
-                // then
-                .andExpect(status().isOk());
-
-        // when
-        mockMvc.perform(post("/api/login").params(params3))
-                .andDo(print())
-
-                // then
-                .andExpect(status().isConflict());
     }
 }

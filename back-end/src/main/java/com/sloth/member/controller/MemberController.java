@@ -1,34 +1,26 @@
 package com.sloth.member.controller;
 
-import com.sloth.member.dto.LoginDto;
 import com.sloth.member.dto.MemberDetailDto;
 import com.sloth.member.dto.NewMemberDto;
 import com.sloth.member.dto.ResponseDto;
 import com.sloth.member.service.CheckUsernameService;
 import com.sloth.member.service.GetMemberDetailService;
-import com.sloth.member.service.LoginService;
 import com.sloth.member.service.NewMemberService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@RestController              // RestController 선언
-@RequestMapping("/api")  // URI 매핑
+@RestController                     // RestController 선언
+@RequestMapping("/api/member")  // URI 매핑
+@RequiredArgsConstructor
 public class MemberController {
 
     private final CheckUsernameService checkUsernameService;
     private final NewMemberService newMemberService;
     private final GetMemberDetailService getMemberDetailService;
-    private final LoginService loginService;
 
-    public MemberController(CheckUsernameService checkUsernameService, NewMemberService newMemberService, GetMemberDetailService getMemberDetailService, LoginService loginService) {
-        this.checkUsernameService = checkUsernameService;
-        this.newMemberService = newMemberService;
-        this.getMemberDetailService = getMemberDetailService;
-        this.loginService = loginService;
-    }
-
-    @PostMapping("/check/username")
+    @PostMapping("/check")
     /* 아이디 중복 확인 */
     public ResponseEntity<?> checkUsername(@RequestParam String username) {
 
@@ -53,7 +45,7 @@ public class MemberController {
                 );
     }
 
-    @PostMapping("/members")
+    @PostMapping
     /* 회원가입 요청 */
     public ResponseEntity<?> newMember(NewMemberDto newMemberDto) {
 
@@ -78,7 +70,7 @@ public class MemberController {
                 );
     }
 
-    @GetMapping("/members/{id}")
+    @GetMapping("/{id}")
     /* 회원 정보 조회 */
     public ResponseEntity<?> getMemberDetail(@PathVariable Long id) {
 
@@ -102,34 +94,6 @@ public class MemberController {
                 .body(ResponseDto.builder()
                         .success(false)
                         .message("There is no member.")
-                        .build()
-                );
-    }
-
-    @PostMapping("/login")
-    /* 로그인 요청 */
-    public ResponseEntity<?> login(LoginDto loginDto) {
-
-        String result = loginService.login(loginDto);
-
-        // 로그인 성공
-        if (result != null) {
-
-            return ResponseEntity
-                    .status(HttpStatus.OK)
-                    .body(ResponseDto.builder()
-                            .success(true)
-                            .message("Login success.")
-                            .data(result)
-                            .build()
-                    );
-        }
-        // 로그인 실패
-        return ResponseEntity
-                .status(HttpStatus.CONFLICT)
-                .body(ResponseDto.builder()
-                        .success(false)
-                        .message("Login fail.")
                         .build()
                 );
     }

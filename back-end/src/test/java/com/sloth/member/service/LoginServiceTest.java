@@ -1,6 +1,7 @@
 package com.sloth.member.service;
 
-import com.sloth.member.dto.LoginDto;
+import com.sloth.authentication.service.LoginService;
+import com.sloth.authentication.dto.LoginDto;
 import com.sloth.member.dto.NewMemberDto;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;

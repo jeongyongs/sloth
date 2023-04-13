@@ -1,4 +1,4 @@
-package com.sloth.member.dto;
+package com.sloth.authentication.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,6 +9,6 @@ import lombok.Getter;
 @Builder
 public class LoginDto {
 
-    private String username;
-    private String password;
+    private final String username;
+    private final String password;
 }
