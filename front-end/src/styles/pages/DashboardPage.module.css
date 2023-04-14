@@ -1,0 +1,14 @@
+.body {
+    background-color: #f1f1f1f1;
+    display: flex;
+}
+
+.main {
+    width: calc(100vw - 100px);
+}
+
+.main h2 {
+    font-size: 25px;
+    margin: 0;
+    color: #999999;
+}

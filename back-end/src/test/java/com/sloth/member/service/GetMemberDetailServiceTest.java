@@ -38,7 +38,7 @@ class GetMemberDetailServiceTest {
         // when
         newMemberService.newMember(member);
         Member foundMember = memberRepository.findByUsername("sloth");
-        MemberDetailDto memberDetailDto = getMemberDetailService.getDetail(foundMember.getId());
+        MemberDetailDto memberDetailDto = getMemberDetailService.getDetail(foundMember.getUsername());
 
         // then
         Assertions.assertEquals(member.getUsername(), memberDetailDto.getUsername());

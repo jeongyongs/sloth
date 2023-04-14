@@ -15,9 +15,9 @@ public class GetMemberDetailService {
     }
 
     /* 회원 정보 조회 */
-    public MemberDetailDto getDetail(Long id) {
+    public MemberDetailDto getDetail(String username) {
 
-        Member foundMember = memberRepository.findById(id);
+        Member foundMember = memberRepository.findByUsername(username);
 
         // 조회 성공
         if (foundMember != null) {

@@ -1,0 +1,63 @@
+.welcome {
+    height: 300px;
+    min-height: 300px;
+}
+
+.welcome h2 {
+    margin: 0;
+    text-align: center;
+    font-size: 50px;
+    animation: h2-animation 1s ease both;
+}
+
+.welcome h3 {
+    margin: 0;
+    text-align: center;
+    font-size: 30px;
+    animation: h3-animation 1s 300ms ease both;
+}
+
+.welcome .p1 {
+    font-size: 16px;
+    text-align: center;
+    animation: p-animation 1s 1500ms ease both;
+    margin: 70px 0 0;
+}
+
+.welcome .p2 {
+    font-size: 16px;
+    text-align: center;
+    animation: p-animation 1s 2s ease both;
+    margin: 0;
+}
+
+@keyframes h2-animation {
+    from {
+        color: transparent;
+        padding-top: 50px;
+    }
+    to {
+        color: #292929;
+        padding-top: 0;
+    }
+}
+
+@keyframes h3-animation {
+    from {
+        color: transparent;
+        padding-top: 60px;
+    }
+    to {
+        color: #292929;
+        padding-top: 30px;
+    }
+}
+
+@keyframes p-animation {
+    from {
+        color: transparent;
+    }
+    to {
+        color: #999999;
+    }
+}

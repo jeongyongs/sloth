@@ -94,7 +94,7 @@ class MemberControllerTest {
         String jwt = jwtService.createJwt("sloth");
 
         // when
-        mockMvc.perform(get("/api/member/" + member.getId()).header("Authorization", "bearer " + jwt))
+        mockMvc.perform(get("/api/member").header("Authorization", "bearer " + jwt))
                 .andDo(print())
 
                 // then
