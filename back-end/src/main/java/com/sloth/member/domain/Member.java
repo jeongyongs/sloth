@@ -7,8 +7,7 @@ import jakarta.persistence.Id;
 import lombok.*;
 
 @Entity                         // spring bean 관리
-@Getter                         // getter 설정
-@Setter                         // setter 설정
+@Data                           // getter, setter 설정
 @AllArgsConstructor             // 모든 필드 생성자
 @NoArgsConstructor              // 빈 생성자
 @Builder                        // 빌드 패턴 적용

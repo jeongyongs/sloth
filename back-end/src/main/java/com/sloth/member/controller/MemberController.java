@@ -51,7 +51,7 @@ public class MemberController {
 
     @PostMapping
     /* 회원가입 요청 */
-    public ResponseEntity<?> newMember(NewMemberDto newMemberDto) {
+    public ResponseEntity<?> createMember(NewMemberDto newMemberDto) {
 
         // 회원 가입 성공
         if (newMemberService.newMember(newMemberDto)) {

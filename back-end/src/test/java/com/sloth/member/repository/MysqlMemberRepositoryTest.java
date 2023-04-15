@@ -32,12 +32,12 @@ class MysqlMemberRepositoryTest {
 
         // when
         memberRepository.save(member);
-        Member foundMember1 = memberRepository.findById(1L);
+        Member foundMember1 = memberRepository.findById(member.getId());
         Member foundMember2 = memberRepository.findByUsername("sloth");
         List<Member> foundMembers1 = memberRepository.findAll();
 
         memberRepository.remove(member);
-        Member foundMember3 = memberRepository.findById(1L);
+        Member foundMember3 = memberRepository.findById(member.getId());
         Member foundMember4 = memberRepository.findByUsername("sloth");
         List<Member> foundMembers2 = memberRepository.findAll();
 
