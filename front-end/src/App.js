@@ -6,6 +6,7 @@ import SignUpPage from "./pages/SignUpPage";
 import DashboardPage from "./pages/DashboardPage";
 import NewMemberPage from "./pages/NewMemberPage";
 import NotFoundPage from "./pages/NotFoundPage";
+import TeamPage from "./pages/TeamPage";
 
 function App() {
 
@@ -25,6 +26,9 @@ function App() {
                 }/>
                 <Route path="/app/dashboard" element={
                     <DashboardPage token={token}/>
+                }/>
+                <Route path="/app/team" element={
+                    <TeamPage token={token}/>
                 }/>
                 <Route path="/member/complete" element={
                     <NewMemberPage/>

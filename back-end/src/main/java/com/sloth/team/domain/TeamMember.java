@@ -18,10 +18,10 @@ public class TeamMember {
     @GeneratedValue
     @Column(name = "team_member_id")
     private Long id;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "team_id")
     private Team team;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "member_id")
     private Member member;
 }

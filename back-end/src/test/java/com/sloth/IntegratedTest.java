@@ -34,7 +34,6 @@ public class IntegratedTest {
     @Test
     @DisplayName("통합테스트")
     @Transactional
-    @Rollback(value = false)
     void integratedTest() throws Exception {
 
         // 1. 회원 가입 1

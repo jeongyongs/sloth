@@ -4,9 +4,9 @@ import styles from '../styles/components/MainTitle.module.css';
 function MainTitle(props) {
     return (
         <div className={styles.mainTitle}>
-            <h2>대시보드</h2>
+            <h2>{props.title}</h2>
             <div>
-                <p>{props.name}</p>
+                <p>{props.name} 님</p>
                 <div className={styles.profile}></div>
             </div>
         </div>
