@@ -17,15 +17,15 @@ public class JwtService {
 
     private final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
 
-    public String getToken(HttpServletRequest request) throws Exception {    // 토큰 추출
+    public String getToken(HttpServletRequest request) throws Exception {   // 토큰 추출
         String authorization = request.getHeader(HttpHeaders.AUTHORIZATION);
-        if (authorization.startsWith("bearer ")) {
+        if (authorization.startsWith("Bearer ")) {
             return authorization.substring(7);
         }
         throw new Exception("토큰이 존재하지 않음");
     }
 
-    public String generate(String username) { // 토큰 생성
+    public String generate(String username) {   // 토큰 생성
         return Jwts.builder()
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setIssuer("sloth.com")
@@ -35,7 +35,8 @@ public class JwtService {
                 .compact();
     }
 
-    public String getUsername(String token) {   // 아이디 추출
+    public String getUsername(HttpServletRequest request) throws Exception {    // 아이디 추출
+        String token = getToken(request);
         return Jwts.parserBuilder()
                 .setSigningKey(key)
                 .build()
@@ -44,11 +45,12 @@ public class JwtService {
                 .getSubject();
     }
 
-    public boolean isAvailable(String token) {  // 토큰 유효성 검사
-        return getExpiration(token).before(new Date());
+    public boolean isAvailable(HttpServletRequest request) throws Exception {   // 토큰 유효성 검사
+        return getExpiration(request).after(new Date());
     }
 
-    private Date getExpiration(String token) {  // 유효기간 추출
+    private Date getExpiration(HttpServletRequest request) throws Exception {   // 유효기간 추출
+        String token = getToken(request);
         return Jwts.parserBuilder()
                 .setSigningKey(key)
                 .build()

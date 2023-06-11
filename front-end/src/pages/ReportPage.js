@@ -13,7 +13,7 @@ const Component = styled.div`
 
 function ReportPage(props) {
     return (
-        <AppLayout select={7}>
+        <AppLayout select={7} token={props.token} setToken={props.setToken}>
             <Component>
                 <h2>보고서</h2>
             </Component>

@@ -13,7 +13,7 @@ const Component = styled.div`
 
 function InvitePage(props) {
     return (
-        <AppLayout select={4}>
+        <AppLayout select={4} token={props.token} setToken={props.setToken}>
             <Component>
                 <h2>초 대</h2>
             </Component>

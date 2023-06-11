@@ -9,7 +9,6 @@ import TeamPage from "./pages/TeamPage";
 import DashboardPage from "./pages/DashboardPage";
 import HandoverPage from "./pages/HandoverPage";
 import ReportPage from "./pages/ReportPage";
-import NavigatorForTest from "./components/NavigatorForTest";
 import {useState} from "react";
 
 function App() {
@@ -18,7 +17,6 @@ function App() {
 
     return (
         <div className="App">
-            <NavigatorForTest/>
             <Routes>
                 <Route path="/" element={<Navigate to="/login"/>}/>
                 <Route path="/login" element={<LoginPage token={token} setToken={setToken}/>}/>

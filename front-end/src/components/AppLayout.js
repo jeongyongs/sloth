@@ -1,12 +1,13 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import styled from "styled-components";
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import TeamSidebar from "./TeamSidebar";
 import MenuSidebar from "./MenuSidebar";
 import Topbar from "./Topbar";
 import {FOOTER_BACKGROUND, FOOTER_BORDER, MAIN_BACKGROUND, SIDEBAR_BACKGROUND} from "../constants";
-import Terms from "./Terms";
 import Modal from "./Modal";
+import NewTeamForm from "./NewTeamForm";
+import axios from "axios";
 
 const Component = styled.div`
   display: flex;
@@ -40,7 +41,7 @@ const Component = styled.div`
       }
     }
   }
-  
+
   > div.form {
     background-color: red;
   }
@@ -49,37 +50,71 @@ const Component = styled.div`
 function AppLayout(props) {
 
     const {teamId} = useParams();
-    const testList = [{id: 1, name: "슬로스"}, {id: 2, name: "123456"}, {id: 123, name: "TEST"}];
+    const [teams, setTeams] = useState([]);
     const [newTeamVisible, setNewTeamVisible] = useState(false);
+    const [refresh, setRefresh] = useState(false);
+    const [move, setMove] = useState(false);
+    const [current, setCurrent] = useState([]);
+    const navigator = useNavigate();
 
-    function map() {
+    useEffect(() => {
+        axios.get("/api/teams", {
+            headers: {
+                "Authorization": `Bearer ${props.token}`
+            }
+        })
+            .then(responese => {
+                setTeams(responese.data);
+            }).catch(() => {
+            props.setToken("");
+        });
+    }, [refresh]);
+
+    useEffect(() => {
+        if (props.token.length === 0) {
+            navigator("/login");
+        }
+    }, []);
+
+    useEffect(() => {
+        if (move) {
+            setMove(false);
+            navigator(`/teams/${teams[teams.length - 1].id}/dashboard`);
+            return;
+        }
         if (props.select === 1) {
-            return ["대시보드"];
+            setCurrent(["대시보드"]);
+            return;
         }
         if (props.select === 2) {
-            return ["알 림"];
+            setCurrent(["알 림"]);
+            return;
         }
         if (props.select === 3) {
-            return ["프로필"];
+            setCurrent(["프로필"]);
+            return;
         }
         if (props.select === 4) {
-            return ["초 대"];
+            setCurrent(["초 대"]);
+            return;
         }
         if (props.select === 5) {
-            return [testList.filter(item => item.id === Number(teamId))[0].name, "<NEXT>", "팀"];
+            setCurrent([teams.filter(item => item.id === Number(teamId))[0] ? teams.filter(item => item.id === Number(teamId))[0].name : "", "<NEXT>", "팀"]);
+            return;
         }
         if (props.select === 6) {
-            return [testList.filter(item => item.id === Number(teamId))[0].name, "<NEXT>", "인수인계"];
+            setCurrent([teams.filter(item => item.id === Number(teamId))[0] ? teams.filter(item => item.id === Number(teamId))[0].name : "", "<NEXT>", "인수인계"]);
+            return;
         }
-        return [testList.filter(item => item.id === Number(teamId))[0].name, "<NEXT>", "보고서"];
-    }
+        setCurrent([teams.filter(item => item.id === Number(teamId))[0] ? teams.filter(item => item.id === Number(teamId))[0].name : "", "<NEXT>", "보고서"]);
+    }, [teams, teamId]);
 
     return (
         <Component>
-            <TeamSidebar set={setNewTeamVisible} select={props.select} list={testList}/>
+            <TeamSidebar set={setNewTeamVisible} select={props.select} list={teams}/>
             <MenuSidebar select={props.select}/>
             <div className="main-container">
-                <Topbar current={map()}/>
+                <Topbar current={current}/>
                 <div className="main">
                     <div className="body">
                         {props.children}
@@ -89,11 +124,9 @@ function AppLayout(props) {
                     </div>
                 </div>
             </div>
-            <Modal size={["500px", "700px"]} title="팀 생성" visible={newTeamVisible} set={setNewTeamVisible}>
-                <div className="form">
-                    <label htmlFor="username">아이디</label>
-                    <input id="username" type="text" placeholder="로그인 시 사용할 아이디를 입력하세요"/>
-                </div>
+            <Modal size={["500px", ""]} title="팀 생성" visible={newTeamVisible} set={setNewTeamVisible}>
+                <NewTeamForm setMove={setMove} select={props.select} token={props.token} set={setNewTeamVisible}
+                             refresh={refresh} setRefresh={setRefresh}/>
             </Modal>
         </Component>
     );

@@ -13,7 +13,7 @@ const Component = styled.div`
 
 function TeamPage(props) {
     return (
-        <AppLayout select={5}>
+        <AppLayout select={5} token={props.token} setToken={props.setToken}>
             <Component>
                 <h2>팀</h2>
             </Component>

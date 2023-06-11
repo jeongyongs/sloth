@@ -13,7 +13,7 @@ const Component = styled.div`
 
 function ProfilePage(props) {
     return (
-        <AppLayout select={3}>
+        <AppLayout select={3} token={props.token} setToken={props.setToken}>
             <Component>
                 <h2>알 림</h2>
             </Component>

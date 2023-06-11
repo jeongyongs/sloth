@@ -21,7 +21,7 @@ const Component = styled.div`
 function DashboardPage(props) {
     const navigator = useNavigate();
     return (
-        <AppLayout select={1}>
+        <AppLayout select={1} token={props.token} setToken={props.setToken}>
             <Component>
                 <h2>대시보드</h2>
                 <div className="test"></div>

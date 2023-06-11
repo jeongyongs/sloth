@@ -23,6 +23,7 @@ const Component = styled.div`
     overflow: hidden;
     text-align: center;
     width: 50px;
+    white-space: nowrap;
 
     > svg {
       fill: ${WHITE};

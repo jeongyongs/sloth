@@ -244,6 +244,12 @@ function SignupPage(props) {
     const [signupDone, setSignupDone] = useState(false);
 
     useEffect(() => {
+        if (props.token.length > 0) {
+            navigator("/teams/me/dashboard");
+        }
+    }, []);
+
+    useEffect(() => {
         if (data.username.length > 0 && // 아이디 조건
             data.password.length > 0 && // 비밀번호 조건
             data.passwordConfirm.length > 0 &&  // 비밀번호 확인 조건

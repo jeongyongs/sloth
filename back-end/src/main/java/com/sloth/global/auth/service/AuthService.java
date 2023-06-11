@@ -2,6 +2,7 @@ package com.sloth.global.auth.service;
 
 import com.sloth.domain.user.service.UserService;
 import com.sloth.global.auth.dto.CredentialDto;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -16,9 +17,9 @@ public class AuthService {
     private final UserService userService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    public Authentication authenticate(String token) throws Exception {  // 인증
-        if (jwtService.isAvailable(token)) {
-            String username = jwtService.getUsername(token);
+    public Authentication authenticate(HttpServletRequest request) throws Exception {  // 인증
+        if (jwtService.isAvailable(request)) {
+            String username = jwtService.getUsername(request);
             CredentialDto credential = userService.getCredential(username);
             return new UsernamePasswordAuthenticationToken(credential.getUsername(), credential.getPassword(), null);
         }

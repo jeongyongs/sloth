@@ -12,14 +12,15 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Team {
+public class TeamUser {
 
     @Id
     @GeneratedValue
     private Long id;
-    @Column(unique = true, nullable = false)
-    private String name;
     @ManyToOne
-    @JoinColumn(name = "leader_id")
-    private User leader;
+    @JoinColumn(name = "team_id")
+    private Team team;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 }

@@ -16,4 +16,8 @@ public class UserService {
         User user = userRepository.findByUsername(username);
         return new CredentialDto(user.getUsername(), user.getPassword());
     }
+
+    public User getUserByUsername(String username) {
+        return userRepository.findByUsername(username);
+    }
 }

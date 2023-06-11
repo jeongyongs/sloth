@@ -13,7 +13,7 @@ const Component = styled.div`
 
 function HandoverPage(props) {
     return (
-        <AppLayout select={6}>
+        <AppLayout select={6} token={props.token} setToken={props.setToken}>
             <Component>
                 <h2>인수인계</h2>
             </Component>
