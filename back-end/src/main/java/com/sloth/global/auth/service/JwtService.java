@@ -25,7 +25,7 @@ public class JwtService {
         throw new Exception("토큰이 존재하지 않음");
     }
 
-    public String create(String username) { // 토큰 생성
+    public String generate(String username) { // 토큰 생성
         return Jwts.builder()
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setIssuer("sloth.com")

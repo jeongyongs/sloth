@@ -2,6 +2,7 @@ import React, {useEffect, useState} from "react";
 import styled from "styled-components";
 import {BLUE, BLUE_ACTIVE, GRAY, LIGHT_GRAY, MAIN_BACKGROUND, WHITE} from "../constants";
 import {useNavigate} from "react-router-dom";
+import axios from "axios";
 
 const Component = styled.div`
   background-color: ${MAIN_BACKGROUND};
@@ -44,6 +45,13 @@ const Component = styled.div`
 
     > div.form {
       padding: 20px 50px;
+
+      > p {
+        margin: 0 0 10px;
+        text-align: center;
+        font-size: 14px;
+        color: red;
+      }
 
       > input {
         box-sizing: border-box;
@@ -92,26 +100,46 @@ const Component = styled.div`
 function LoginPage(props) {
 
     const navigator = useNavigate();
-    const [login, setLogin] = useState({username: "", password: ""});
+    const [data, setData] = useState({username: "", password: ""});
     const [isClickable, setClickable] = useState(false);
+    const [warningText, setWarningText] = useState("");
 
     useEffect(() => {
-        if (login.username.length <= 0) {
-            setClickable(false);
+        if (props.token.length > 0) {
+            navigator("/teams/me/dashboard");
+        }
+    }, []);
+
+    useEffect(() => {
+        setWarningText("");
+        if (data.username.length > 0 && data.password.length > 0) {
+            setClickable(true);
             return;
         }
-        if (login.password.length <= 0) {
-            setClickable(false);
-            return;
-        }
-        setClickable(true);
-    }, [login]);
+        setClickable(false);
+    }, [data]);
 
     function changeHandler(e) {
-        setLogin({
-            ...login,
+        setData({
+            ...data,
             [e.target.id]: e.target.value
         })
+    }
+
+    function request() {
+        if (isClickable) { // 클릭 가능 여부 확인
+            setClickable(false);
+            axios.post("/api/login", {
+                username: data.username,
+                password: data.password,
+            }).then(response => {
+                console.log(typeof response.data, response.data);
+                props.setToken(response.data);
+                navigator("/teams/me/dashboard");
+            }).catch(error => {
+                setWarningText("아이디 또는 비밀번호가 일치하지 않습니다");
+            });
+        }
     }
 
     return (
@@ -120,11 +148,12 @@ function LoginPage(props) {
                 <h1>SLOTH</h1>
                 <p>서비스 이용을 위해 로그인해주세요.</p>
                 <div className="form">
-                    <input type="text" placeholder="아이디" value={login.username} id="username"
+                    <input type="text" placeholder="아이디" value={data.username} id="username"
                            onChange={changeHandler}/>
-                    <input type="password" placeholder="비밀번호" value={login.password} id="password"
+                    <input type="password" placeholder="비밀번호" value={data.password} id="password"
                            onChange={changeHandler}/>
-                    <div className="submit">
+                    <p>{warningText}</p>
+                    <div className="submit" onClick={request}>
                         <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20">
                             <path
                                 d="M489-120v-60h291v-600H489v-60h291q24 0 42 18t18 42v600q0 24-18 42t-42 18H489Zm-78-185-43-43 102-102H120v-60h348L366-612l43-43 176 176-174 174Z"/>

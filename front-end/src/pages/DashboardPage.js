@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import AppLayout from "../components/AppLayout";
 import {MAIN_BACKGROUND} from "../constants";
+import {useNavigate} from "react-router-dom";
 
 const Component = styled.div`
   background-color: ${MAIN_BACKGROUND};
@@ -18,6 +19,7 @@ const Component = styled.div`
 `
 
 function DashboardPage(props) {
+    const navigator = useNavigate();
     return (
         <AppLayout select={1}>
             <Component>

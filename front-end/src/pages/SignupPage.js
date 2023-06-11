@@ -244,30 +244,16 @@ function SignupPage(props) {
     const [signupDone, setSignupDone] = useState(false);
 
     useEffect(() => {
-        if (data.username.length <= 0) {    // 아이디 조건
-            setClickable(false);
+        if (data.username.length > 0 && // 아이디 조건
+            data.password.length > 0 && // 비밀번호 조건
+            data.passwordConfirm.length > 0 &&  // 비밀번호 확인 조건
+            data.password === data.passwordConfirm &&   // 비밀번호 확인
+            data.name.length > 0 && // 이름 조건
+            data.termsConfirm) {    // 약관 동의 여부
+            setClickable(true);
             return;
         }
-        if (data.password.length <= 0) {    // 비밀번호 조건
-            setClickable(false);
-            return;
-        }
-        if (data.passwordConfirm.length <= 0) { // 비밀번호 확인 조건
-            setClickable(false);
-            return;
-        }
-        if (data.password !== data.passwordConfirm) {   // 비밀번호 확인
-            return;
-        }
-        if (data.name.length <= 0) {    // 이름 조건
-            setClickable(false);
-            return;
-        }
-        if (!data.termsConfirm) {   // 약관 동의 여부
-            setClickable(false);
-            return;
-        }
-        setClickable(true);
+        setClickable(false);
     }, [data]);
 
     useEffect(() => {   // 사용할 수 없는 아이디
@@ -298,19 +284,18 @@ function SignupPage(props) {
     }
 
     function request() {
-        if (!isClickable) { // 클릭 가능 여부 확인
-            return;
+        if (isClickable) { // 클릭 가능 여부 확인
+            setClickable(false);
+            axios.post("/api/signup", {
+                username: data.username,
+                password: data.password,
+                name: data.name
+            }).then(response => {
+                setSignupDone(true);
+            }).catch(error => {
+                setWarningUsername("사용할 수 없는 아이디입니다");
+            });
         }
-        setClickable(false);
-        axios.post("/api/signup", {
-            username: data.username,
-            password: data.password,
-            name: data.name
-        }).then(response => {
-            setSignupDone(true);
-        }).catch(error => {
-            setWarningUsername("사용할 수 없는 아이디입니다");
-        });
     }
 
     return (

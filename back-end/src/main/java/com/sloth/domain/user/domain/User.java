@@ -9,20 +9,20 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Entity                         // spring bean 관리
-@Data                           // getter, setter 설정
-@AllArgsConstructor             // 모든 필드 생성자
-@NoArgsConstructor              // 빈 생성자
-@Builder                        // 빌드 패턴 적용
+@Entity
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class User {
 
-    @Id                         // PK
-    @GeneratedValue             // 시퀀스 자동 번호
-    private Long id;            // 고유번호
+    @Id // PK
+    @GeneratedValue // 시퀀스 자동 번호
+    private Long id;
     @Column(unique = true, nullable = false)
-    private String username;    // 아이디
+    private String username;
     @Column(nullable = false)
-    private String password;    // 비밀번호
+    private String password;
     @Column(nullable = false)
-    private String name;        // 이름
+    private String name;
 }
