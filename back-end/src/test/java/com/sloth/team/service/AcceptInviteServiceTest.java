@@ -1,8 +1,8 @@
 package com.sloth.team.service;
 
-import com.sloth.authentication.service.JwtService;
-import com.sloth.member.domain.Member;
-import com.sloth.member.repository.MemberRepository;
+import com.sloth.global.auth.service.JwtService;
+import com.sloth.domain.user.domain.User;
+import com.sloth.domain.user.repository.UserRepository;
 import com.sloth.team.domain.InviteTeam;
 import com.sloth.team.domain.Team;
 import com.sloth.team.domain.TeamMember;
@@ -24,7 +24,7 @@ class AcceptInviteServiceTest {
     @Autowired
     AcceptInviteService acceptInviteService;
     @Autowired
-    MemberRepository memberRepository;
+    UserRepository userRepository;
     @Autowired
     TeamRepository teamRepository;
     @Autowired
@@ -40,26 +40,26 @@ class AcceptInviteServiceTest {
     void acceptInviteTest() {
 
         // given
-        Member member1 = Member.builder().username("owner").password("q1w2e3r4").name("owner")
+        User user1 = User.builder().username("owner").password("q1w2e3r4").name("owner")
                 .email("owner@sloth.com").phone("000-0000-0000").build();
-        memberRepository.save(member1);
-        Member member2 = Member.builder().username("jeongyongs").password("q1w2e3r4").name("Jeongyong Lee")
+        userRepository.save(user1);
+        User user2 = User.builder().username("jeongyongs").password("q1w2e3r4").name("Jeongyong Lee")
                 .email("Jeongyongs@sloth.com").phone("000-0000-0000").build();
-        memberRepository.save(member2);
-        Team team1 = Team.builder().name("슬로스").owner(member1).build();
+        userRepository.save(user2);
+        Team team1 = Team.builder().name("슬로스").owner(user1).build();
         teamRepository.save(team1);
-        Team team2 = Team.builder().name("배달의 민족").owner(member1).build();
+        Team team2 = Team.builder().name("배달의 민족").owner(user1).build();
         teamRepository.save(team2);
-        InviteTeam inviteTeam1 = InviteTeam.builder().team(team1).member(member2).build();
+        InviteTeam inviteTeam1 = InviteTeam.builder().team(team1).user(user2).build();
         inviteTeamRepository.save(inviteTeam1);
-        InviteTeam inviteTeam2 = InviteTeam.builder().team(team2).member(member2).build();
+        InviteTeam inviteTeam2 = InviteTeam.builder().team(team2).user(user2).build();
         inviteTeamRepository.save(inviteTeam2);
-        String jwt = jwtService.createJwt(member2.getUsername());
+        String jwt = jwtService.create(user2.getUsername());
 
         // when
         boolean result1 = acceptInviteService.accept(jwt, inviteTeam1.getId());
         boolean result2 = acceptInviteService.accept(jwt, inviteTeam2.getId());
-        List<TeamMember> foundTeams = teamMemberRepository.findByMember(member2);
+        List<TeamMember> foundTeams = teamMemberRepository.findByMember(user2);
 
         // then
         Assertions.assertTrue(result1);

@@ -1,8 +1,8 @@
 package com.sloth.team.service;
 
-import com.sloth.authentication.service.JwtService;
-import com.sloth.member.domain.Member;
-import com.sloth.member.repository.MemberRepository;
+import com.sloth.global.auth.service.JwtService;
+import com.sloth.domain.user.domain.User;
+import com.sloth.domain.user.repository.UserRepository;
 import com.sloth.team.domain.InviteTeam;
 import com.sloth.team.dto.InviteInfo;
 import com.sloth.team.repository.InviteTeamRepository;
@@ -18,15 +18,15 @@ import java.util.List;
 public class CheckInviteService {
 
     private final InviteTeamRepository inviteTeamRepository;
-    private final MemberRepository memberRepository;
+    private final UserRepository userRepository;
     private final JwtService jwtService;
 
     /* 팀 초대 조회 */
     public List<InviteInfo> getByMember(String jwt) {
 
-        String username = jwtService.getClaims(jwt).getSubject();
-        Member member = memberRepository.findByUsername(username);
-        List<InviteTeam> inviteTeams = inviteTeamRepository.findByMember(member);
+        String username = jwtService.getUsername(jwt);
+        User user = userRepository.findByUsername(username);
+        List<InviteTeam> inviteTeams = inviteTeamRepository.findByMember(user);
 
         // 조회 성공
         if (inviteTeams != null) {

@@ -1,7 +1,7 @@
 package com.sloth.member.service;
 
-import com.sloth.member.domain.Member;
-import com.sloth.member.repository.MemberRepository;
+import com.sloth.domain.user.domain.User;
+import com.sloth.domain.user.repository.UserRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -15,7 +15,7 @@ class CheckUsernameServiceTest {
     @Autowired
     CheckUsernameService checkUsernameService;
     @Autowired
-    MemberRepository memberRepository;
+    UserRepository userRepository;
 
     @Test
     @DisplayName("아이디 중복 검사")
@@ -23,7 +23,7 @@ class CheckUsernameServiceTest {
     void checkUsernameTest() {
 
         // given
-        Member member = Member.builder()
+        User user = User.builder()
                 .username("sloth")
                 .password("q1w2e3r4")
                 .name("Jeongyong Lee")
@@ -31,11 +31,11 @@ class CheckUsernameServiceTest {
                 .phone("000-0000-0000")
                 .build();
 
-        memberRepository.save(member);
+        userRepository.save(user);
 
         // when
         boolean result1 = checkUsernameService.check("spring");
-        boolean result2 = checkUsernameService.check(member.getUsername());
+        boolean result2 = checkUsernameService.check(user.getUsername());
 
         // then
         Assertions.assertTrue(result1);

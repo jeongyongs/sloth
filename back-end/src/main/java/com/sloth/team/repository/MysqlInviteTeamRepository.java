@@ -1,6 +1,6 @@
 package com.sloth.team.repository;
 
-import com.sloth.member.domain.Member;
+import com.sloth.domain.user.domain.User;
 import com.sloth.team.domain.InviteTeam;
 import com.sloth.team.domain.Team;
 import jakarta.persistence.EntityManager;
@@ -46,11 +46,11 @@ public class MysqlInviteTeamRepository implements InviteTeamRepository {
 
     @Override
     /* Member -> InviteTeam 객체 조회 */
-    public List<InviteTeam> findByMember(Member member) {
+    public List<InviteTeam> findByMember(User user) {
 
         String jpql = "SELECT inviteTeam FROM InviteTeam inviteTeam WHERE inviteTeam.member = :member";
         List<InviteTeam> inviteTeams =
-                entityManager.createQuery(jpql, InviteTeam.class).setParameter("member", member).getResultList();
+                entityManager.createQuery(jpql, InviteTeam.class).setParameter("member", user).getResultList();
         // 조회 성공
         if (!inviteTeams.isEmpty()) {
             return inviteTeams;

@@ -1,6 +1,6 @@
 package com.sloth.team.repository;
 
-import com.sloth.member.domain.Member;
+import com.sloth.domain.user.domain.User;
 import com.sloth.team.domain.InviteTeam;
 import com.sloth.team.domain.Team;
 
@@ -18,7 +18,7 @@ public interface InviteTeamRepository {
     List<InviteTeam> findByNTeam(Team team);
 
     /* Member -> InviteTeam 객체 조회 */
-    List<InviteTeam> findByMember(Member member);
+    List<InviteTeam> findByMember(User user);
 
     /* InviteTeam 객체 삭제 */
     void remove(InviteTeam inviteTeam);

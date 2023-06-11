@@ -1,8 +1,8 @@
 package com.sloth.team.service;
 
-import com.sloth.authentication.service.JwtService;
-import com.sloth.member.domain.Member;
-import com.sloth.member.repository.MemberRepository;
+import com.sloth.global.auth.service.JwtService;
+import com.sloth.domain.user.domain.User;
+import com.sloth.domain.user.repository.UserRepository;
 import com.sloth.team.domain.InviteTeam;
 import com.sloth.team.domain.Team;
 import com.sloth.team.dto.InviteInfo;
@@ -24,7 +24,7 @@ class CheckInviteServiceTest {
     @Autowired
     CheckInviteService checkInviteService;
     @Autowired
-    MemberRepository memberRepository;
+    UserRepository userRepository;
     @Autowired
     TeamRepository teamRepository;
     @Autowired
@@ -38,17 +38,17 @@ class CheckInviteServiceTest {
     void checkInviteTeamByMemberTest() {
 
         // given
-        Member member = Member.builder().username("jeongyongs").password("q1w2e3r4").name("Jeongyong Lee")
+        User user = User.builder().username("jeongyongs").password("q1w2e3r4").name("Jeongyong Lee")
                 .email("Jeongyongs@sloth.com").phone("000-0000-0000").build();
-        memberRepository.save(member);
-        String jwt = jwtService.createJwt(member.getUsername());
-        Team team = Team.builder().name("Sloth").owner(member).build();
+        userRepository.save(user);
+        String jwt = jwtService.create(user.getUsername());
+        Team team = Team.builder().name("Sloth").owner(user).build();
         teamRepository.save(team);
-        InviteTeam inviteTeam = InviteTeam.builder().member(member).team(team)
+        InviteTeam inviteTeam = InviteTeam.builder().user(user).team(team)
                 .expired(new Date(System.currentTimeMillis()).getTime() + 1000 * 60 * 60 * 24).build();
         inviteTeamRepository.save(inviteTeam);
         InviteInfo inviteInfo =
-                InviteInfo.builder().id(inviteTeam.getId()).teamName(team.getName()).teamOwner(member.getName()).expired(inviteTeam.getExpired()).build();
+                InviteInfo.builder().id(inviteTeam.getId()).teamName(team.getName()).teamOwner(user.getName()).expired(inviteTeam.getExpired()).build();
 
         // when
         List<InviteInfo> inviteTeams = checkInviteService.getByMember(jwt);

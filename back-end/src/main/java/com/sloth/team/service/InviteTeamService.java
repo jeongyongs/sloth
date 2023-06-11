@@ -1,7 +1,7 @@
 package com.sloth.team.service;
 
-import com.sloth.member.domain.Member;
-import com.sloth.member.repository.MemberRepository;
+import com.sloth.domain.user.domain.User;
+import com.sloth.domain.user.repository.UserRepository;
 import com.sloth.team.domain.InviteTeam;
 import com.sloth.team.domain.Team;
 import com.sloth.team.repository.InviteTeamRepository;
@@ -18,7 +18,7 @@ public class InviteTeamService {
 
     private final InviteTeamRepository inviteTeamRepository;
     private final TeamRepository teamRepository;
-    private final MemberRepository memberRepository;
+    private final UserRepository userRepository;
 
     /* 팀 초대 */
     @Transactional
@@ -27,17 +27,17 @@ public class InviteTeamService {
         // 초대 만료 시간 24시간
         Long expired = new Date(System.currentTimeMillis()).getTime() + 1000 * 60 * 60 * 24;
         Team team = teamRepository.findByName(name);
-        Member member = memberRepository.findByUsername(username);
+        User user = userRepository.findByUsername(username);
 
         if (team == null) {
             return false;
         }
 
-        if (member == null) {
+        if (user == null) {
             return false;
         }
 
-        InviteTeam inviteTeam = InviteTeam.builder().team(team).member(member).expired(expired).build();
+        InviteTeam inviteTeam = InviteTeam.builder().team(team).user(user).expired(expired).build();
 
         try {
             inviteTeamRepository.save(inviteTeam);

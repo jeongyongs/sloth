@@ -1,5 +1,6 @@
 package com.sloth.authentication.service;
 
+import com.sloth.global.auth.service.JwtService;
 import io.jsonwebtoken.Claims;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -21,9 +22,9 @@ class JwtServiceTest {
         String username = "sloth";
 
         // when
-        String token = jwtService.createJwt(username);
-        boolean result = jwtService.validateToken(token);
-        Claims claims = jwtService.getClaims(token);
+        String token = jwtService.create(username);
+        boolean result = jwtService.validate(token);
+        Claims claims = jwtService.getUsername(token);
 
         // then
         Assertions.assertTrue(result);

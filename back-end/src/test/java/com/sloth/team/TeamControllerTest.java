@@ -1,8 +1,8 @@
 package com.sloth.team;
 
-import com.sloth.authentication.service.JwtService;
-import com.sloth.member.domain.Member;
-import com.sloth.member.repository.MemberRepository;
+import com.sloth.global.auth.service.JwtService;
+import com.sloth.domain.user.domain.User;
+import com.sloth.domain.user.repository.UserRepository;
 import com.sloth.team.domain.InviteTeam;
 import com.sloth.team.domain.Team;
 import com.sloth.team.repository.InviteTeamRepository;
@@ -32,7 +32,7 @@ class TeamControllerTest {
     @Autowired
     MockMvc mockMvc;
     @Autowired
-    MemberRepository memberRepository;
+    UserRepository userRepository;
     @Autowired
     JwtService jwtService;
     @Autowired
@@ -46,10 +46,10 @@ class TeamControllerTest {
     void createTeamTest() throws Exception {
 
         // given
-        Member member = Member.builder().username("jeongyongs").password("q1w2e3r4").name("Jeongyong Lee")
+        User user = User.builder().username("jeongyongs").password("q1w2e3r4").name("Jeongyong Lee")
                 .email("Jeongyongs@sloth.com").phone("000-0000-0000").build();
-        memberRepository.save(member);
-        String jwt = jwtService.createJwt("jeongyongs");
+        userRepository.save(user);
+        String jwt = jwtService.create("jeongyongs");
 
         // when
         MvcResult mvcResult = mockMvc.perform(post("/api/team")
@@ -74,10 +74,10 @@ class TeamControllerTest {
     void getJoinedTeamTest() throws Exception {
 
         // given
-        Member member = Member.builder().username("jeongyongs").password("q1w2e3r4").name("Jeongyong Lee")
+        User user = User.builder().username("jeongyongs").password("q1w2e3r4").name("Jeongyong Lee")
                 .email("Jeongyongs@sloth.com").phone("000-0000-0000").build();
-        memberRepository.save(member);
-        String jwt = jwtService.createJwt("jeongyongs");
+        userRepository.save(user);
+        String jwt = jwtService.create("jeongyongs");
         mockMvc.perform(post("/api/team")
                 .param("name", "Sloth").header("Authorization", "bearer " + jwt));
 
@@ -103,18 +103,18 @@ class TeamControllerTest {
     void inviteTeamTest() throws Exception {
 
         // given
-        Member member1 = Member.builder().username("jeongyongs").password("q1w2e3r4").name("Jeongyong Lee")
+        User user1 = User.builder().username("jeongyongs").password("q1w2e3r4").name("Jeongyong Lee")
                 .email("Jeongyongs@sloth.com").phone("000-0000-0000").build();
-        Member member2 = Member.builder().username("jeongyongs").password("q1w2e3r4").name("Jeongyong Lee")
+        User user2 = User.builder().username("jeongyongs").password("q1w2e3r4").name("Jeongyong Lee")
                 .email("Jeongyongs@sloth.com").phone("000-0000-0000").build();
-        memberRepository.save(member1);
-        String jwt = jwtService.createJwt("jeongyongs");
-        Team team = Team.builder().name("Sloth").owner(member1).build();
+        userRepository.save(user1);
+        String jwt = jwtService.create("jeongyongs");
+        Team team = Team.builder().name("Sloth").owner(user1).build();
         teamRepository.save(team);
 
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("name", team.getName());
-        params.add("username", member2.getUsername());
+        params.add("username", user2.getUsername());
 
         // when
         mockMvc.perform(post("/api/team/invite").params(params).header("Authorization", "bearer " + jwt))
@@ -131,14 +131,14 @@ class TeamControllerTest {
     void checkAllInviteByMemberTest() throws Exception {
 
         // given
-        Member member = Member.builder().username("jeongyongs").password("q1w2e3r4").name("Jeongyong Lee")
+        User user = User.builder().username("jeongyongs").password("q1w2e3r4").name("Jeongyong Lee")
                 .email("Jeongyongs@sloth.com").phone("000-0000-0000").build();
-        memberRepository.save(member);
-        Team team = Team.builder().name("Sloth").owner(member).build();
+        userRepository.save(user);
+        Team team = Team.builder().name("Sloth").owner(user).build();
         teamRepository.save(team);
-        String jwt = jwtService.createJwt(member.getUsername());
+        String jwt = jwtService.create(user.getUsername());
         InviteTeam inviteTeam =
-                InviteTeam.builder().member(member).team(team).expired(new Date(System.currentTimeMillis()).getTime() + 1000 * 60 * 60 * 24).build();
+                InviteTeam.builder().user(user).team(team).expired(new Date(System.currentTimeMillis()).getTime() + 1000 * 60 * 60 * 24).build();
         inviteTeamRepository.save(inviteTeam);
 
         // when
@@ -158,14 +158,14 @@ class TeamControllerTest {
     void acceptInviteTest() throws Exception {
 
         // given
-        Member member = Member.builder().username("jeongyongs").password("q1w2e3r4").name("Jeongyong Lee")
+        User user = User.builder().username("jeongyongs").password("q1w2e3r4").name("Jeongyong Lee")
                 .email("Jeongyongs@sloth.com").phone("000-0000-0000").build();
-        memberRepository.save(member);
-        Team team = Team.builder().name("Sloth").owner(member).build();
+        userRepository.save(user);
+        Team team = Team.builder().name("Sloth").owner(user).build();
         teamRepository.save(team);
-        String jwt = jwtService.createJwt(member.getUsername());
+        String jwt = jwtService.create(user.getUsername());
         InviteTeam inviteTeam =
-                InviteTeam.builder().member(member).team(team).expired(new Date(System.currentTimeMillis()).getTime() + 1000 * 60 * 60 * 24).build();
+                InviteTeam.builder().user(user).team(team).expired(new Date(System.currentTimeMillis()).getTime() + 1000 * 60 * 60 * 24).build();
         inviteTeamRepository.save(inviteTeam);
 
         // when

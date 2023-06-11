@@ -1,6 +1,6 @@
 package com.sloth.team.domain;
 
-import com.sloth.member.domain.Member;
+import com.sloth.domain.user.domain.User;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -19,5 +19,5 @@ public class Team {
     private String name;
     @ManyToOne
     @JoinColumn(name = "member_id")
-    private Member owner;
+    private User owner;
 }

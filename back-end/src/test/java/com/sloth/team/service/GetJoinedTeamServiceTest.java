@@ -1,8 +1,8 @@
 package com.sloth.team.service;
 
-import com.sloth.authentication.service.JwtService;
-import com.sloth.member.domain.Member;
-import com.sloth.member.repository.MemberRepository;
+import com.sloth.global.auth.service.JwtService;
+import com.sloth.domain.user.domain.User;
+import com.sloth.domain.user.repository.UserRepository;
 import com.sloth.team.domain.Team;
 import com.sloth.team.domain.TeamMember;
 import com.sloth.team.dto.TeamInfo;
@@ -24,7 +24,7 @@ class GetJoinedTeamServiceTest {
     @Autowired
     GetJoinedTeamService getJoinedTeamService;
     @Autowired
-    MemberRepository memberRepository;
+    UserRepository userRepository;
     @Autowired
     JwtService jwtService;
     @Autowired
@@ -36,22 +36,22 @@ class GetJoinedTeamServiceTest {
     void getJoinedTeamServiceTest() {
 
         // given
-        Member member = Member.builder().username("jeongyongs").password("q1w2e3r4").name("Jeongyong Lee")
+        User user = User.builder().username("jeongyongs").password("q1w2e3r4").name("Jeongyong Lee")
                 .email("Jeongyongs@sloth.com").phone("000-0000-0000").build();
-        memberRepository.save(member);
-        Team team1 = Team.builder().name("Sloth1").owner(member).build();
-        Team team2 = Team.builder().name("Sloth2").owner(member).build();
-        Team team3 = Team.builder().name("Sloth3").owner(member).build();
+        userRepository.save(user);
+        Team team1 = Team.builder().name("Sloth1").owner(user).build();
+        Team team2 = Team.builder().name("Sloth2").owner(user).build();
+        Team team3 = Team.builder().name("Sloth3").owner(user).build();
         teamRepository.save(team1);
         teamRepository.save(team2);
         teamRepository.save(team3);
-        TeamMember teamMember1 = TeamMember.builder().team(team1).member(member).build();
-        TeamMember teamMember2 = TeamMember.builder().team(team2).member(member).build();
-        TeamMember teamMember3 = TeamMember.builder().team(team3).member(member).build();
+        TeamMember teamMember1 = TeamMember.builder().team(team1).user(user).build();
+        TeamMember teamMember2 = TeamMember.builder().team(team2).user(user).build();
+        TeamMember teamMember3 = TeamMember.builder().team(team3).user(user).build();
         teamMemberRepository.save(teamMember1);
         teamMemberRepository.save(teamMember2);
         teamMemberRepository.save(teamMember3);
-        String jwt = jwtService.createJwt("jeongyongs");
+        String jwt = jwtService.create("jeongyongs");
 
         // when
         List<TeamInfo> list = getJoinedTeamService.getList(jwt);

@@ -1,8 +1,8 @@
 package com.sloth.team.service;
 
-import com.sloth.authentication.service.JwtService;
-import com.sloth.member.domain.Member;
-import com.sloth.member.repository.MemberRepository;
+import com.sloth.domain.user.domain.User;
+import com.sloth.domain.user.repository.UserRepository;
+import com.sloth.global.auth.service.JwtService;
 import com.sloth.team.domain.Team;
 import com.sloth.team.domain.TeamMember;
 import com.sloth.team.repository.TeamMemberRepository;
@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class CreateTeamService {
 
-    private final MemberRepository memberRepository;
+    private final UserRepository userRepository;
     private final TeamRepository teamRepository;
     private final JwtService jwtService;
     private final TeamMemberRepository teamMemberRepository;
@@ -24,11 +24,11 @@ public class CreateTeamService {
     public boolean create(String jwt, String name) {
 
         // JWT 아이디 추출
-        String username = jwtService.getClaims(jwt).getSubject();
+        String username = jwtService.getUsername(jwt);
 
-        Member member = memberRepository.findByUsername(username);
-        Team team = Team.builder().name(name).owner(member).build();
-        TeamMember teamMember = TeamMember.builder().member(member).team(team).build();
+        User user = userRepository.findByUsername(username);
+        Team team = Team.builder().name(name).owner(user).build();
+        TeamMember teamMember = TeamMember.builder().user(user).team(team).build();
 
         if (teamRepository.findByName(name) != null) {
             return false;

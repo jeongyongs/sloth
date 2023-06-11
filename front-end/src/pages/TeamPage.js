@@ -1,60 +1,24 @@
-import React, {useEffect, useState} from "react";
-import axios from "axios";
-import {useNavigate} from "react-router-dom";
-import AppMenu from "../components/AppMenu";
-import styles from '../styles/pages/TeamPage.module.css';
-import MainTitle from "../components/MainTitle";
-import Window from "../components/Window";
+import React from "react";
+import styled from "styled-components";
+import AppLayout from "../components/AppLayout";
+import {MAIN_BACKGROUND} from "../constants";
 
-function DashboardPage(props) {
+const Component = styled.div`
+  background-color: ${MAIN_BACKGROUND};
 
-    const [userInfo, setUserInfo] = useState({});
-    const [teams, setTeams] = useState([]);
-    const navigate = useNavigate();
+  > * {
+    margin: 0;
+  }
+`
 
-    useEffect(() => {
-
-        axios.get("/api/member", {
-            headers: {
-                Authorization: `bearer ${props.token}`
-            }
-        })
-            .then(response => {
-                setUserInfo(response.data.data);
-            })
-            .catch(e => {
-                navigate("/member/auth");
-            });
-    }, []);
-
-    useEffect(() => {
-
-        axios.get("/api/team", {
-            headers: {
-                Authorization: `bearer ${props.token}`
-            }
-        })
-            .then(response => {
-                if (response.data.data !== null) {
-                    setTeams(response.data.data);
-                }
-            })
-            .catch(e => {
-                navigate("/member/auth");
-            });
-    }, []);
-
+function TeamPage(props) {
     return (
-        <div className={styles.page}>
-            <AppMenu/>
-            <div className={styles.body}>
-                <MainTitle title="팀 관리" name={userInfo.name}/>
-                <div className={styles.main}>
-                    <Window listType="teams" list={teams} width="1" height="full" title="팀 목록"/>
-                </div>
-            </div>
-        </div>
+        <AppLayout select={5}>
+            <Component>
+                <h2>팀</h2>
+            </Component>
+        </AppLayout>
     );
 }
 
-export default DashboardPage;
+export default TeamPage;

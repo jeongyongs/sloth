@@ -1,0 +1,12 @@
+export const BLUE = "#25b4fe";
+export const BLUE_ACTIVE = "#1f8fcc";
+export const WHITE = "#ffffff";
+export const GRAY = "#999999";
+export const LIGHT_GRAY = "#cccccc";
+export const MAIN_BACKGROUND = "#ededed";
+export const SIDEBAR_BORDER = "#393d41";
+export const SIDEBAR_BACKGROUND = "#2f3337";
+export const SIDEBAR_BUTTON_HOVER = "#393d41";
+export const SIDEBAR_TEAM_BUTTON = "#43484d";
+export const FOOTER_BACKGROUND = "#f5f5f5";
+export const FOOTER_BORDER = "#dddddd";

@@ -1,7 +1,7 @@
 package com.sloth.team.repository;
 
-import com.sloth.member.domain.Member;
-import com.sloth.member.repository.MemberRepository;
+import com.sloth.domain.user.domain.User;
+import com.sloth.domain.user.repository.UserRepository;
 import com.sloth.team.domain.Team;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -18,7 +18,7 @@ class MysqlTeamRepositoryTest {
     @Autowired
     TeamRepository teamRepository;
     @Autowired
-    MemberRepository memberRepository;
+    UserRepository userRepository;
 
     @Test
     @DisplayName("팀 레포지토리 테스트")
@@ -26,10 +26,10 @@ class MysqlTeamRepositoryTest {
     void teamRepositoryTest() {
 
         // given
-        Member member = Member.builder().username("jeongyongs").password("q1w2e3r4").name("Jeongyong Lee")
+        User user = User.builder().username("jeongyongs").password("q1w2e3r4").name("Jeongyong Lee")
                 .email("Jeongyongs@sloth.com").phone("000-0000-0000").build();
-        Team team = Team.builder().name("Sloth").owner(member).build();
-        memberRepository.save(member);
+        Team team = Team.builder().name("Sloth").owner(user).build();
+        userRepository.save(user);
 
         // when
         teamRepository.save(team);

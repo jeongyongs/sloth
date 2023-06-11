@@ -1,6 +1,6 @@
 package com.sloth.team.domain;
 
-import com.sloth.member.domain.Member;
+import com.sloth.domain.user.domain.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,5 +23,5 @@ public class TeamMember {
     private Team team;
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "member_id")
-    private Member member;
+    private User user;
 }

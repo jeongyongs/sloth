@@ -1,8 +1,8 @@
 package com.sloth.team.service;
 
-import com.sloth.authentication.service.JwtService;
-import com.sloth.member.domain.Member;
-import com.sloth.member.repository.MemberRepository;
+import com.sloth.global.auth.service.JwtService;
+import com.sloth.domain.user.domain.User;
+import com.sloth.domain.user.repository.UserRepository;
 import com.sloth.team.domain.TeamMember;
 import com.sloth.team.dto.TeamInfo;
 import com.sloth.team.repository.TeamMemberRepository;
@@ -18,13 +18,13 @@ public class GetJoinedTeamService {
 
     private final TeamMemberRepository teamMemberRepository;
     private final JwtService jwtService;
-    private final MemberRepository memberRepository;
+    private final UserRepository userRepository;
 
     public List<TeamInfo> getList(String jwt) {
 
-        String username = jwtService.getClaims(jwt).getSubject();
-        Member member = memberRepository.findByUsername(username);
-        List<TeamMember> teams = teamMemberRepository.findByMember(member);
+        String username = jwtService.getUsername(jwt);
+        User user = userRepository.findByUsername(username);
+        List<TeamMember> teams = teamMemberRepository.findByMember(user);
 
         // 만약 가입한 팀이 없다면
         if (teams.isEmpty()) {

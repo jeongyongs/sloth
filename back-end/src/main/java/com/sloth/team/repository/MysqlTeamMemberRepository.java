@@ -1,6 +1,6 @@
 package com.sloth.team.repository;
 
-import com.sloth.member.domain.Member;
+import com.sloth.domain.user.domain.User;
 import com.sloth.team.domain.Team;
 import com.sloth.team.domain.TeamMember;
 import jakarta.persistence.EntityManager;
@@ -31,12 +31,12 @@ public class MysqlTeamMemberRepository implements TeamMemberRepository {
 
     @Override
     /* Member -> TeamMember 객체 조회 */
-    public List<TeamMember> findByMember(Member member) {
+    public List<TeamMember> findByMember(User user) {
 
         String jpql = "SELECT teamMember FROM TeamMember teamMember WHERE teamMember.member = :member";
 
         try {
-            return entityManager.createQuery(jpql, TeamMember.class).setParameter("member", member).getResultList();
+            return entityManager.createQuery(jpql, TeamMember.class).setParameter("member", user).getResultList();
 
         } catch (Exception e) {
 

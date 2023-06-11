@@ -1,10 +1,8 @@
 package com.sloth.team.service;
 
-import com.sloth.authentication.service.JwtService;
-import com.sloth.member.domain.Member;
-import com.sloth.member.repository.MemberRepository;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletRequestWrapper;
+import com.sloth.global.auth.service.JwtService;
+import com.sloth.domain.user.domain.User;
+import com.sloth.domain.user.repository.UserRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -18,7 +16,7 @@ class CreateTeamServiceTest {
     @Autowired
     CreateTeamService createTeamService;
     @Autowired
-    MemberRepository memberRepository;
+    UserRepository userRepository;
     @Autowired
     JwtService jwtService;
 
@@ -28,10 +26,10 @@ class CreateTeamServiceTest {
     void createTest() {
 
         // given
-        Member member = Member.builder().username("jeongyongs").password("q1w2e3r4").name("Jeongyong Lee")
+        User user = User.builder().username("jeongyongs").password("q1w2e3r4").name("Jeongyong Lee")
                 .email("Jeongyongs@sloth.com").phone("000-0000-0000").build();
-        memberRepository.save(member);
-        String jwt = jwtService.createJwt("jeongyongs");
+        userRepository.save(user);
+        String jwt = jwtService.create("jeongyongs");
 
         // when
         boolean result = createTeamService.create(jwt, "Sloth");

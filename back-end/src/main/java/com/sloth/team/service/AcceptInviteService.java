@@ -1,8 +1,8 @@
 package com.sloth.team.service;
 
-import com.sloth.authentication.service.JwtService;
-import com.sloth.member.domain.Member;
-import com.sloth.member.repository.MemberRepository;
+import com.sloth.global.auth.service.JwtService;
+import com.sloth.domain.user.domain.User;
+import com.sloth.domain.user.repository.UserRepository;
 import com.sloth.team.domain.InviteTeam;
 import com.sloth.team.domain.TeamMember;
 import com.sloth.team.repository.InviteTeamRepository;
@@ -17,21 +17,21 @@ public class AcceptInviteService {
 
     private final InviteTeamRepository inviteTeamRepository;
     private final JwtService jwtService;
-    private final MemberRepository memberRepository;
+    private final UserRepository userRepository;
     private final TeamMemberRepository teamMemberRepository;
 
     @Transactional
     /* 팀 초대 수락 */
     public boolean accept(String jwt, Long inviteId) {
 
-        String username = jwtService.getClaims(jwt).getSubject();
-        Member member = memberRepository.findByUsername(username);
+        String username = jwtService.getUsername(jwt);
+        User user = userRepository.findByUsername(username);
         InviteTeam inviteTeam = inviteTeamRepository.findById(inviteId);
 
-        if (member == inviteTeam.getMember()) {
+        if (user == inviteTeam.getUser()) {
             try {
                 inviteTeamRepository.remove(inviteTeam);
-                teamMemberRepository.save(TeamMember.builder().member(inviteTeam.getMember()).team(inviteTeam.getTeam()).build());
+                teamMemberRepository.save(TeamMember.builder().user(inviteTeam.getUser()).team(inviteTeam.getTeam()).build());
                 // 수락 성공
                 return true;
 
