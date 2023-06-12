@@ -9,6 +9,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 @Entity
 @Data
 @AllArgsConstructor
@@ -25,4 +27,6 @@ public class User {
     private String password;
     @Column(nullable = false)
     private String name;
+    @Column(name = "join_date")
+    private Date joinDate;
 }

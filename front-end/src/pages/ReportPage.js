@@ -1,23 +1,26 @@
-import React from "react";
+import React, {useEffect} from "react";
 import styled from "styled-components";
-import AppLayout from "../components/AppLayout";
-import {MAIN_BACKGROUND} from "../constants";
+import {useNavigate, useParams} from "react-router-dom";
 
 const Component = styled.div`
-  background-color: ${MAIN_BACKGROUND};
-
-  > * {
-    margin: 0;
-  }
 `
 
 function ReportPage(props) {
+
+    const {teamId} = useParams();
+    const navigator = useNavigate();
+
+    useEffect(() => {
+        if (teamId === "me") {
+            props.setSelect(1);
+            navigator("/teams/me/dashboard");
+        }
+    }, [teamId]);
+
     return (
-        <AppLayout select={7} token={props.token} setToken={props.setToken}>
-            <Component>
-                <h2>보고서</h2>
-            </Component>
-        </AppLayout>
+        <Component>
+            <h2>보고서</h2>
+        </Component>
     );
 }
 

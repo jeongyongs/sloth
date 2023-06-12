@@ -126,6 +126,7 @@ function NewTeamForm(props) {
                     setData("");
                     props.set(false);
                     props.setMove(true);
+                    props.setSelect(1);
                     refresh();
                 }).catch(() => {
                 setWarningTeam("사용할 수 없는 팀 이름입니다");

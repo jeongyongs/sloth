@@ -1,9 +1,7 @@
-import React, {useState} from "react";
+import React from "react";
 import styled from "styled-components";
 import TeamSidebarButton from "./TeamSidebarButton";
-import {BLUE, SIDEBAR_BACKGROUND, SIDEBAR_BORDER, SIDEBAR_BUTTON_HOVER, SIDEBAR_TEAM_BUTTON} from "../constants";
-import Modal from "./Modal";
-import Terms from "./Terms";
+import {BLUE, SIDEBAR_BACKGROUND, SIDEBAR_BORDER, SIDEBAR_TEAM_BUTTON} from "../constants";
 
 const Component = styled.div`
   background-color: ${SIDEBAR_BACKGROUND};
@@ -41,7 +39,7 @@ const Component = styled.div`
       border-radius: 100px;
 
       &:active {
-        background-color: ${SIDEBAR_BUTTON_HOVER};
+        background-color: ${SIDEBAR_BORDER};
       }
 
       > svg {

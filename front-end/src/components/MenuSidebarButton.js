@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import {useNavigate} from "react-router-dom";
-import {GRAY, SIDEBAR_BUTTON_HOVER, WHITE} from "../constants";
+import {GRAY, SIDEBAR_BORDER, WHITE} from "../constants";
 
 const Component = styled.div`
   cursor: ${props => props.selected ? "default" : "pointer"};
@@ -21,7 +21,7 @@ const Component = styled.div`
   }
 
   &:hover {
-    background-color: ${props => props.selected ? "" : SIDEBAR_BUTTON_HOVER};
+    background-color: ${props => props.selected ? "" : SIDEBAR_BORDER};
   }
 `
 
@@ -33,6 +33,7 @@ function MenuSidebarButton(props) {
     return (
         <Component selected={props.selected} onClick={() => {
             if (isClickable) {
+                props.setSelect(props.num);
                 navigator(props.to);
             }
         }}>

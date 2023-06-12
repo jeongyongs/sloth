@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 @Entity
 @Data
 @AllArgsConstructor
@@ -22,4 +24,6 @@ public class Team {
     @ManyToOne
     @JoinColumn(name = "leader_id")
     private User leader;
+    @Column(name = "create_date")
+    private Date createDate;
 }

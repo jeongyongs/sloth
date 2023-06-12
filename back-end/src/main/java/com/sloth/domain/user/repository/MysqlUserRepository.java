@@ -24,7 +24,7 @@ public class MysqlUserRepository implements UserRepository {
     }
 
     @Override
-    public User findByUsername(String username) {   // 유저네임으로 객체 조회
+    public User findByUsername(String username) {   // 유저명으로 객체 조회
 
         String jpql = "SELECT user FROM User user WHERE user.username = :username";
 

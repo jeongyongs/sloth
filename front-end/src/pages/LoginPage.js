@@ -133,7 +133,6 @@ function LoginPage(props) {
                 username: data.username,
                 password: data.password,
             }).then(response => {
-                console.log(typeof response.data, response.data);
                 props.setToken(response.data);
                 navigator("/teams/me/dashboard");
             }).catch(error => {

@@ -8,6 +8,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
+
 @Service
 @RequiredArgsConstructor
 public class SignupService {
@@ -25,6 +27,7 @@ public class SignupService {
                     .username(data.getUsername())
                     .password(encoder.encode(data.getPassword()))   // 비밀번호 암호화
                     .name(data.getName())
+                    .joinDate(new Date())
                     .build();
             userRepository.save(user);
             return;

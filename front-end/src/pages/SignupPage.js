@@ -296,9 +296,9 @@ function SignupPage(props) {
                 username: data.username,
                 password: data.password,
                 name: data.name
-            }).then(response => {
+            }).then(() => {
                 setSignupDone(true);
-            }).catch(error => {
+            }).catch(() => {
                 setWarningUsername("사용할 수 없는 아이디입니다");
             });
         }

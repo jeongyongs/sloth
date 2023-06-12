@@ -1,21 +1,29 @@
 import React from "react";
 import styled from "styled-components";
 import {useNavigate, useParams} from "react-router-dom";
-import {BLUE, SIDEBAR_BUTTON_HOVER, SIDEBAR_TEAM_BUTTON, WHITE} from "../constants";
+import {BLUE, LIGHT_GRAY, SIDEBAR_BORDER, SIDEBAR_TEAM_BUTTON, WHITE} from "../constants";
 
 const Component = styled.div`
   background-color: ${props => props.selected ? BLUE : SIDEBAR_TEAM_BUTTON};
   display: flex;
   justify-content: center;
   align-items: center;
-  cursor: pointer;
+  cursor: ${props => props.selected ? "default" : "pointer"};
   border-radius: 100px;
   width: 50px;
   height: 50px;
   margin-bottom: 10px;
 
   &:active {
-    background-color: ${SIDEBAR_BUTTON_HOVER};
+    background-color: ${props => props.selected ? "default" : SIDEBAR_BORDER};
+
+    > div.inner {
+      color: ${props => props.selected ? "" : LIGHT_GRAY};
+
+      > svg {
+        fill: ${props => props.selected ? "" : LIGHT_GRAY};
+      }
+    }
   }
 
   > div.inner {
@@ -38,6 +46,9 @@ function TeamSidebarButton(props) {
 
     return (
         <Component onClick={() => {
+            if (props.id === teamId) {
+                return;
+            }
             if (props.select === 1) {
                 navigator(`/teams/${props.id}/dashboard`);
                 return;

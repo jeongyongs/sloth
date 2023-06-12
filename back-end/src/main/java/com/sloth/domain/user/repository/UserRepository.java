@@ -10,7 +10,7 @@ public interface UserRepository {
 
     User findById(Long id); // 아이디로 객체 조회
 
-    User findByUsername(String username);   // 유저네임으로 객체 조회
+    User findByUsername(String username);   // 유저명으로 객체 조회
 
     List<User> findAll();   // 모든 객체 조회
 
