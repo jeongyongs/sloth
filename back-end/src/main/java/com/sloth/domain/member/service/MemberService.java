@@ -93,4 +93,22 @@ public class MemberService {
         }
         throw new Exception("추방 권한 없음");
     }
+
+    @Transactional
+    public void leave(HttpServletRequest request, Long teamId) throws Exception {
+        Team team = teamQueryService.getTeamById(teamId);
+        String username = jwtService.getUsername(request);
+        User user = userService.getUserByUsername(username);
+
+        if (team.getLeader() != user) { // 리더 탈퇴 불가능
+            Member member = memberRepository.findByTeamAndUser(team, user);
+            memberRepository.remove(member);
+            return;
+        }
+        throw new Exception("리더 탈퇴 불가능");
+    }
+
+    public Member findByTeamAndUser(Team team, User user) {
+        return memberRepository.findByTeamAndUser(team, user);
+    }
 }

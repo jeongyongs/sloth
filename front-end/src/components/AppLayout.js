@@ -109,14 +109,14 @@ function AppLayout(props) {
             return;
         }
         if (select === 5) {
-            setCurrent([teams.filter(item => item.id === Number(teamId))[0] ? teams.filter(item => item.id === Number(teamId))[0].name : "", "<NEXT>", "팀"]);
+            setCurrent(["팀", "<NEXT>", teams.filter(item => item.id === Number(teamId))[0] ? teams.filter(item => item.id === Number(teamId))[0].name : ""]);
             return;
         }
         if (select === 6) {
-            setCurrent([teams.filter(item => item.id === Number(teamId))[0] ? teams.filter(item => item.id === Number(teamId))[0].name : "", "<NEXT>", "인수인계"]);
+            setCurrent(["인수인계", "<NEXT>", teams.filter(item => item.id === Number(teamId))[0] ? teams.filter(item => item.id === Number(teamId))[0].name : ""]);
             return;
         }
-        setCurrent([teams.filter(item => item.id === Number(teamId))[0] ? teams.filter(item => item.id === Number(teamId))[0].name : "", "<NEXT>", "보고서"]);
+        setCurrent(["보고서", "<NEXT>", teams.filter(item => item.id === Number(teamId))[0] ? teams.filter(item => item.id === Number(teamId))[0].name : ""]);
     }, [teamId, select]);
 
     return (
@@ -131,9 +131,12 @@ function AppLayout(props) {
                             <Route path="/dashboard" element={<DashboardPage token={props.token}/>}/>
                             <Route path="/notification" element={<NotificationPage token={props.token}/>}/>
                             <Route path="/profile" element={<ProfilePage token={props.token}/>}/>
-                            <Route path="/invites" element={<InvitePage token={props.token}/>}/>
-                            <Route path="" element={<TeamPage setToken={props.setToken} setSelect={setSelect}
-                                                              token={props.token}/>}/>
+                            <Route path="/invites" element={<InvitePage refresh={refresh} setRefresh={setRefresh}
+                                                                        token={props.token}/>}/>
+                            <Route path=""
+                                   element={<TeamPage setCurrent={setCurrent} refresh={refresh} setRefresh={setRefresh}
+                                                      setToken={props.setToken} setSelect={setSelect}
+                                                      token={props.token}/>}/>
                             <Route path="/handovers"
                                    element={<HandoverPage setSelect={setSelect} token={props.token}/>}/>
                             <Route path="/reports" element={<ReportPage setSelect={setSelect} token={props.token}/>}/>
@@ -146,8 +149,7 @@ function AppLayout(props) {
             </div>
             <Modal size={["500px", ""]} title="팀 생성" visible={newTeamVisible} set={setNewTeamVisible}>
                 <NewTeamForm setSelect={setSelect} setMove={setMove} token={props.token} set={setNewTeamVisible}
-                             refresh={refresh}
-                             setRefresh={setRefresh}/>
+                             refresh={refresh} setRefresh={setRefresh}/>
             </Modal>
         </Component>
     );

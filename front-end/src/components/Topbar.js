@@ -13,6 +13,7 @@ const Component = styled.div`
   height: 80px;
   padding: 20px 50px;
   box-shadow: rgba(0, 0, 0, 0.1) 0 0 10px 0;
+  position: relative;
 
   > div.nav {
     display: flex;

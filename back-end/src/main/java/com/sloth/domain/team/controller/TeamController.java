@@ -1,6 +1,6 @@
 package com.sloth.domain.team.controller;
 
-import com.sloth.domain.team.dto.NewTeamDto;
+import com.sloth.domain.team.dto.TeamNameDto;
 import com.sloth.domain.team.dto.TeamDto;
 import com.sloth.domain.team.dto.TeamInfoDto;
 import com.sloth.domain.team.service.TeamService;
@@ -18,7 +18,7 @@ public class TeamController {
     private final TeamService teamService;
 
     @PostMapping("/teams")
-    public void createTeam(HttpServletRequest request, @RequestBody NewTeamDto data) throws Exception { // 팀 생성 API
+    public void createTeam(HttpServletRequest request, @RequestBody TeamNameDto data) throws Exception { // 팀 생성 API
         teamService.create(request, data);
     }
 

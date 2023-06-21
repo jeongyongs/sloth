@@ -20,6 +20,7 @@ const Component = styled.div`
     width: ${props => props.size[0]};
     height: ${props => props.size[1]};
     margin: 10px;
+    box-sizing: border-box;
 
     > div.main {
       box-sizing: border-box;

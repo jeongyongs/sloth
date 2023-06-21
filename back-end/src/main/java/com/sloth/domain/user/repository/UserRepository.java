@@ -15,4 +15,6 @@ public interface UserRepository {
     List<User> findAll();   // 모든 객체 조회
 
     void remove(User user); // 객체 삭제
+
+    List<User> findAllByUsernameNotJoined(String username, Long teamId);
 }

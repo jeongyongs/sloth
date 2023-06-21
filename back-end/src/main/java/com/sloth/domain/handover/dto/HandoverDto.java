@@ -1,4 +1,4 @@
-package com.sloth.domain.team.dto;
+package com.sloth.domain.handover.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +9,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class NewTeamDto {
+public class HandoverDto {
 
-    private String name;  // 이름
+    private String title;
+    private String content;
+    private Long teamId;
 }

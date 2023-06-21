@@ -4,7 +4,7 @@ import com.sloth.domain.member.domain.Member;
 import com.sloth.domain.member.dto.MemberDto;
 import com.sloth.domain.member.service.MemberService;
 import com.sloth.domain.team.domain.Team;
-import com.sloth.domain.team.dto.NewTeamDto;
+import com.sloth.domain.team.dto.TeamNameDto;
 import com.sloth.domain.team.dto.TeamDto;
 import com.sloth.domain.team.dto.TeamInfoDto;
 import com.sloth.domain.team.repository.TeamRepository;
@@ -29,7 +29,7 @@ public class TeamService {
     private final MemberService memberService;
 
     @Transactional
-    public void create(HttpServletRequest request, NewTeamDto data) throws Exception {  // 팀 생성
+    public void create(HttpServletRequest request, TeamNameDto data) throws Exception {  // 팀 생성
         if (data.getName().length() > 0) {    // 아이디 확인
             String username = jwtService.getUsername(request);
             User user = userService.getUserByUsername(username);

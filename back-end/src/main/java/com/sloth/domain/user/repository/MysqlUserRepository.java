@@ -48,4 +48,20 @@ public class MysqlUserRepository implements UserRepository {
     public void remove(User user) { // 객체 삭제
         entityManager.remove(user);
     }
+
+    @Override
+    public List<User> findAllByUsernameNotJoined(String username, Long teamId) {    // 유저명으로 팀에 가입하지 않은 객체 조회
+
+        String jpql = "SELECT user FROM User user " +
+                "WHERE (user.username LIKE CONCAT('%', :username, '%') " +
+                "OR user.username LIKE CONCAT(:username, '%') " +
+                "OR user.username LIKE CONCAT('%', :username)) " +
+                "AND user.id NOT IN (SELECT member.user.id FROM Member member WHERE member.team.id = :teamId)";
+
+        return entityManager
+                .createQuery(jpql, User.class)
+                .setParameter("username", username)
+                .setParameter("teamId", teamId)
+                .getResultList();
+    }
 }

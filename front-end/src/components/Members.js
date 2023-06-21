@@ -89,22 +89,21 @@ function Members(props) {
 
     const {teamId} = useParams();
     const [members, setMembers] = useState([]);
-    const [isLeader, setIsLeader] = useState(false);
-    const [refresh, setRefresh] = useState(false);
     const [visible, setVisible] = useState(false);
     const [kickUserId, setKickUserId] = useState("");
     const [kickUsername, setKickUsername] = useState("");
+    const [refresh, setRefresh] = useState(false);
 
     useEffect(() => {
         setMembers([]);
-        setIsLeader(false);
+        props.setIsLeader(false);
         axios.get(`/api/teams/${teamId}/members`, {
             headers: {
                 "Authorization": `Bearer ${props.token}`
             }
         }).then(responese => {
             setMembers(responese.data.members);
-            setIsLeader(responese.data.leader);
+            props.setIsLeader(responese.data.leader);
             props.setTotal(responese.data.members.length);
         }).catch(() => {
         });
@@ -126,19 +125,19 @@ function Members(props) {
         <Component>
             <div className="data title">
                 <div className="id">번 호</div>
+                <div className="join-date">가입 날짜</div>
                 <div className="username">아이디</div>
                 <div className="name">이 름</div>
-                <div className="join-date">가입 일자</div>
-                <div className="manage">{isLeader ? "관 리" : ""}</div>
+                <div className="manage">{props.isLeader ? "관 리" : ""}</div>
             </div>
             {members.map((member, index) => (
                 <div className="data">
                     <div className="id">{index + 1}</div>
+                    <div className="join-date">{new Date(member.joinDate).toLocaleDateString()}</div>
                     <div className="username">{member.username}</div>
                     <div className="name">{member.name}</div>
-                    <div className="join-date">{new Date(member.joinDate).toLocaleDateString()}</div>
                     <div className="manage">
-                        {isLeader && member.role !== "leader" ? (
+                        {props.isLeader && member.role !== "leader" ? (
                             <div className="kick">
                                 <div id={member.id} className={member.username} onClick={kickConfirm}>
                                     <svg xmlns="http://www.w3.org/2000/svg" height="16" viewBox="0 -960 960 960"

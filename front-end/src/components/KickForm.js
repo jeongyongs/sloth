@@ -61,6 +61,11 @@ function KickForm(props) {
                 props.setRefresh(true);
             }).catch(() => {
                 setClickable(true);
+                if (props.refresh) {
+                    props.setRefresh(false);
+                    return;
+                }
+                props.setRefresh(true);
             });
         }
     }

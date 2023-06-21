@@ -22,4 +22,9 @@ public class MemberController {
     public void kick(HttpServletRequest request, @PathVariable Long teamId, @PathVariable Long userId) throws Exception {
         memberService.kick(request, teamId, userId);
     }
+
+    @DeleteMapping("/teams/{teamId}/leave")
+    public void leave(HttpServletRequest request, @PathVariable Long teamId) throws Exception {
+        memberService.leave(request, teamId);
+    }
 }

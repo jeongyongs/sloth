@@ -1,9 +1,12 @@
 import React, {useEffect, useState} from "react";
 import styled from "styled-components";
 import {useNavigate, useParams} from "react-router-dom";
-import {BLUE, GRAY, LIGHT_GRAY, WHITE} from "../constants";
+import {BLUE, BLUE_ACTIVE, GRAY, LIGHT_GRAY, RED, RED_ACTIVE, WHITE} from "../constants";
 import axios from "axios";
 import Members from "../components/Members";
+import Modal from "../components/Modal";
+import InviteForm from "../components/InviteForm";
+import LeaveForm from "../components/LeaveForm";
 
 const Component = styled.div`
   > div.profile { // 팀 네임 카드
@@ -72,11 +75,49 @@ const Component = styled.div`
     margin-bottom: 20px;
 
     > div.title {
+      display: flex;
+      justify-content: space-between;
       margin-bottom: 10px;
 
       > p {
         color: ${GRAY};
         margin: 0 0 10px 0;
+      }
+
+      div.container {
+        display: flex;
+
+        > div.invite {
+          cursor: ${props => props.isLeader ? "pointer" : "default"};
+          display: ${props => props.isLeader ? "flex" : "none"};
+          justify-content: center;
+          align-items: center;
+          padding: 0 20px;
+          border-radius: 3px;
+          background-color: ${BLUE};
+          color: ${WHITE};
+
+          &:active {
+            background-color: ${BLUE_ACTIVE};
+            color: ${LIGHT_GRAY};
+          }
+        }
+
+        > div.leave {
+          cursor: ${props => !props.isLeader ? "pointer" : "default"};
+          display: ${props => !props.isLeader ? "flex" : "none"};
+          justify-content: center;
+          align-items: center;
+          padding: 0 20px;
+          border-radius: 3px;
+          background-color: ${RED};
+          color: ${WHITE};
+
+          &:active {
+            background-color: ${RED_ACTIVE};
+            color: ${LIGHT_GRAY};
+          }
+        }
       }
     }
   }
@@ -87,6 +128,10 @@ function TeamPage(props) {
     const {teamId} = useParams();
     const [data, setData] = useState({});
     const [total, setTotal] = useState(0);
+    const [isLeader, setIsLeader] = useState(false);
+    const [inviteVisible, setInviteVisible] = useState(false);
+    const [leaveVisible, setLeaveVisible] = useState(false);
+    const [input, setInput] = useState("");
     const navigator = useNavigate();
 
     useEffect(() => {
@@ -108,12 +153,25 @@ function TeamPage(props) {
         }).then(response => {
             setData(response.data);
         }).catch(() => {
-            props.setToken("");
+            props.setSelect(1);
+            props.setCurrent(["대시보드"]);
+            navigator("/teams/me/dashboard");
+            if (props.refresh) {
+                props.setRefresh(false);
+                return;
+            }
+            props.setRefresh(true);
         });
-    }, [teamId]);
+    }, [teamId, props.refresh]);
+
+    function set() {
+        setInput("");
+        setInviteVisible(false);
+        console.log(input);
+    }
 
     return (
-        <Component>
+        <Component isLeader={isLeader}>
             <br/>
             <div className="profile">
                 <div className="icon">
@@ -136,9 +194,26 @@ function TeamPage(props) {
             <div className="content">
                 <div className="title">
                     <p>구성원 (총 {total} 명)</p>
+                    <div className="container">
+                        <div className="invite" onClick={() => {
+                            setInviteVisible(true)
+                        }}>초 대
+                        </div>
+                        <div className="leave" onClick={() => {
+                            setLeaveVisible(true)
+                        }}>탈 퇴
+                        </div>
+                    </div>
                 </div>
-                <Members setTotal={setTotal} token={props.token}/>
+                <Members isLeader={isLeader} setIsLeader={setIsLeader} setTotal={setTotal} token={props.token}/>
             </div>
+            <Modal size={["600px", "600px"]} title="초 대" visible={inviteVisible} set={set}>
+                <InviteForm input={input} setInput={setInput} token={props.token}/>
+            </Modal>
+            <Modal size={["300px", ""]} title="탈 퇴" visible={leaveVisible} set={setLeaveVisible}>
+                <LeaveForm refresh={props.refresh} setRefresh={props.setRefresh} token={props.token}
+                           teamName={data.teamName}/>
+            </Modal>
         </Component>
     );
 }
