@@ -27,6 +27,7 @@ public class Handover {
     @JoinColumn(name = "transferor_id")
     private User transferor;
     private String title;
+	@Column(length = 1000)
     private String content;
     @Column(name = "create_date")
     private Date createDate;

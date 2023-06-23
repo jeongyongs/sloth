@@ -167,7 +167,6 @@ function TeamPage(props) {
     function set() {
         setInput("");
         setInviteVisible(false);
-        console.log(input);
     }
 
     return (

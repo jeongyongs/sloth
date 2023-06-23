@@ -146,7 +146,7 @@ function NewHandoverForm(props) {
             <label htmlFor="title">프로젝트/작업명</label>
             <input value={data.title} type="text" id="title" onChange={changeHandler}/>
             <label htmlFor="content">내 용</label>
-            <textarea value={data.content} id="content" rows="1" onChange={textareaChangeHandler}></textarea>
+            <textarea maxLength={1000} value={data.content} id="content" rows="1" onChange={textareaChangeHandler}></textarea>
             <div className="container">
                 <div className="clear" onClick={() => setData({title: "", content: ""})}>초기화</div>
                 <div className="submit" onClick={submit}>등 록</div>

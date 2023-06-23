@@ -13,6 +13,7 @@ const Component = styled.div`
   background-color: rgba(0, 0, 0, 0.5);
   width: 100vw;
   height: 100vh;
+  backdrop-filter: blur(5px);
 
   > div.container {
     background-color: ${WHITE};

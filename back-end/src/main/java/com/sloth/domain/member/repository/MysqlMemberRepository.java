@@ -73,4 +73,20 @@ public class MysqlMemberRepository implements MemberRepository {
     public void remove(Member member) { // 객체 삭제
         entityManager.remove(member);
     }
+
+	@Override
+	public List<Member> findAllBySearch(String username, Team team) {
+
+		String jpql = "SELECT member FROM Member member " +
+			"WHERE (member.user.username LIKE CONCAT('%', :username, '%') " +
+			"OR member.user.username LIKE CONCAT(:username, '%') " +
+			"OR member.user.username LIKE CONCAT('%', :username)) " +
+			"AND member.team = :team";
+
+		return entityManager
+			.createQuery(jpql, Member.class)
+			.setParameter("username", username)
+			.setParameter("team", team)
+			.getResultList();
+	}
 }

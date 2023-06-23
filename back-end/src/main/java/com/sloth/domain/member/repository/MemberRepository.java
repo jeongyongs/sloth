@@ -21,4 +21,6 @@ public interface MemberRepository {
     List<Member> findAllByUser(User user);   // 유저로 객체 조회
 
     void remove(Member member); // 객체 삭제
+
+	List<Member> findAllBySearch(String username, Team team);
 }

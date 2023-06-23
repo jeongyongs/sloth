@@ -25,6 +25,7 @@ public class HandoverService {
         return handoverRepository.findById(id);
     }
 
+	@Transactional
     public void remove(Handover handover) {
         handoverRepository.remove(handover);
     }
